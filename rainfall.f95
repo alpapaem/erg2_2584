@@ -1,6 +1,6 @@
 program Rainfall
   implicit none
-  integer :: i,Nmax,rows,iostat,N
+  integer :: i,Nmax,rows,iostat,N,Avg
   character(100)::line
   character(20),dimension(:),allocatable:: T
   integer,dimension(:),allocatable:: R
@@ -23,15 +23,19 @@ program Rainfall
 
   !check the requested size of Nmax
   If (Nmax<=rows) then
-     allocate (T(Nmax))                        !allocate Arrays
+     allocate (T(Nmax))                                    !allocate Arrays
      allocate (R(Nmax))
      
-     call FillArrays(Nmax,T,R)                   !call subroutine 
+     call FillArrays(Nmax,T,R)                             !call subroutine 
  
-     do i = 1, Nmax                              !print results
+     do i = 1, Nmax                                        !print results
        write(*,*) T(i), R(i)
      end do
      write(*,*) 'The number of items in each Array is',N
+
+     
+     write(*,*) 'Average Rainfall is',Avg(N,R)             !print the Average Rainfall
+     
   end if
 
   If (Nmax>rows) then
@@ -40,8 +44,9 @@ program Rainfall
 
  close(10)
  
- contains                                  !subroutine
+ contains                           
  
+ !subrouttine
  subroutine FillArrays(Nmax,T,R)
      integer::Nmax,i
      character(20),dimension(Nmax):: T
@@ -57,3 +62,17 @@ program Rainfall
 
 
 end program Rainfall
+
+
+ !function to calculate Average Rainfall
+ function Avg(N,R)
+    integer::Total,i,N,Avg
+    integer,dimension(N)::R
+
+     Total=0                                             
+     do i=1,N
+       Total=Total + R(i)
+     end do
+     Avg=Total/N
+     
+ end function
